@@ -79,6 +79,9 @@ public class PushMessageActivity extends Activity {
             if (regid.isEmpty()) {
                 registerInBackground();
             }
+            else {
+                mDisplay.setText(regid);
+            }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
@@ -171,7 +174,8 @@ public class PushMessageActivity extends Activity {
                         gcm = GoogleCloudMessaging.getInstance(context);
                     }
                     regid = gcm.register(SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
+                    //Device registered, registration ID=
+                    msg = regid;
 
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
@@ -195,6 +199,7 @@ public class PushMessageActivity extends Activity {
             @Override
             protected void onPostExecute(String msg) {
                 mDisplay.append(msg + "\n");
+                DeviceRegister.asynchHttpRequest(msg);//send device registration id to jh-server.js and save that id in database
             }
         }.execute(null, null, null);
     }
